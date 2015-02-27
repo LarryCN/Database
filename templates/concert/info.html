@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ concert_name }}{% endblock %}
+
+{% block body_block %}
+    {% if concert %}
+		<h1>{{ concert.name }}</h1>
+		<li>{{ count }} people want to go to the concert <a href="/concert/{{ concert.pk }}/like/">Detail</a></li>
+		{% if avg_r %}
+			<li>Rating {{ avg_r }} 
+		{% else %}
+			<li>Have not Rated
+		{% endif %}
+		<a href="/concert/{{ concert.pk }}/ratingdetail/">Detail</a></li>
+		<li>Place : <a href="/venue/{{ venue.slug }}/">{{ concert.venue }}</a></li>
+		<li>Artist : <a href="/artist/{{ artist.slug }}/">{{ concert.artist_id }}</a></li>
+		<li>Date: {{ concert.begin_date }}</li>
+		<li>begin: {{ concert.begin_time }}</li>
+		<li>end: {{ concert.end_time }}</li>
+		<li>Ticket: ${{ concert.ticket_price }} per person and {{ left }} tickets left</li>
+		<li><a href="{{ concert.ticket_hyperlink }}">Offical Web to buy tickets</a></li>
+		<li><a href="/concert/{{ concert.id }}/ticket/">Or you may want to buy tickets here</a></li>
+		<li>{% if concert.remark_state == 1 %} posted by artist{% endif %}
+			{% if concert.remark_state == 3 %} posted by user{% endif %}
+			{% if concert.remark_state == 5 %} posted by admin{% endif %}</li>
+    	<a href="/concert/{{ concert.pk }}/reviews/">Write a Reviews</a><br />
+    {% endif %}	
+	{% if reviews %}
+		<p></p>
+		<h1>Reviews</h1>
+		{% for r in reviews %}
+			<li>{{ r.review_id.time }} {{ r.review_id.user_id }}:</li>
+			<p>{{ r.review_id.review }}</p>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

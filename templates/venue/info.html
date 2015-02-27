@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ venue_name }}{% endblock %}
+
+{% block body_block %}
+    {% if venue %}
+		<h1>{{ venue.name }}</h1>
+    	<li><a href="{{ venue.websit }}">WebSite</a></li>
+		{% if venue.address_line1 %}
+			<li>{{ venue.address_line1 }}</li>	
+		{% endif %}
+		{% if venue.address_line2 %}
+			<li>{{ venue.address_line2 }}</li>	
+		{% endif %}
+		<li>{{ venue.city }} {{venue.state_province}}</li>
+		<li>Capacity: {{ venue.capacity }}</li>
+		<li>Bio: {{ venue.bio }}</li>
+		{% if concerts %}
+			<p>
+			<h1>Concerts</h1>
+			{% for c in concerts %}
+				<li><a href="/concert/{{ c.pk }}/">{{ c.name }}</a> {{c.begin_date}} </li>
+			{% endfor %}
+		{% endif %}
+    {% endif %}
+{% endblock %}

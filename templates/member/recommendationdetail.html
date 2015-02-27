@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}RecommendationDetail{% endblock %}
+
+{% block body_block %}
+    <h1>{{ member.name }}` Recommendation {{ recommendation.name }}</h1>
+	{% if concerts %}
+		<p> Concert lists :<p>
+		{% for c in concerts %}
+    		<a href="/concert/{{ c.concert_id.pk }}/">{{ c.concert_id.name }} by {{ c.concert_id.artist_id }}</a><br />		
+		{% endfor %}
+	{% endif %}
+	<br />
+	{%if add_concert %}
+    	<a href="/member/{{ member.slug }}/{{ recommendation.id }}/add_concert">Add a concert to recommendation</a><br />		
+	{% endif %}
+    {% if user.is_authenticated %}
+   		<a href="/member/{{ member.slug }}/{{ recommendation.pk }}/add_review/">Write a Reviews</a><br />
+	{% endif %}
+	{% if reviews %}
+		<p></p>
+		<h1>Reviews</h1>
+		{% for r in reviews %}
+			<li>{{ r.review_id.time }} {{ r.review_id.user_id }}:</li>
+			<p>{{ r.review_id.review }}</p>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

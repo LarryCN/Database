@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ artist_artname }}{% endblock %}
+
+{% block body_block %}
+    {% if member %}
+		<h1>{{ member.name }}</h1>
+		{% if is_user %}
+			{% if is_fan %}
+				<p>You Like</p>
+			{% else %}
+				<form id="userfollowuser_form" method="post" action="/member/{{ member.slug }}/">
+            		{% csrf_token %}
+            		{% for hidden in form.hidden_fields %}
+                		{{ hidden }}
+            		{% endfor %}
+
+            		{% for field in form.visible_fields %}
+               		<p> {{ field.errors }} </p>
+               		<p> {{ field.help_text }}
+                		{{ field }} </p>
+            		{% endfor %}
+          	  <input type="submit" name="submit" value="Be a fan" />
+				</form>			
+			{% endif %}
+		{% endif %}
+		<li><a href="/member/{{ member.slug }}/follower/">{{ fans }} followers</a></li>
+    	<li>{{ member.user.first_name }} {{ member.user.last_name }}</li>
+		<div style="float: right;"><img src="{{ MEDIA_URL }}{{ member.picture }}" width="50%" height="50%"/></div>
+		{% if styles %}
+			<li>Like Styles: {{ styles }}</li>
+		{% endif %}
+		{% if concerns %}
+			<li>Like Artists: 
+			{% for c in concerns %}
+				<a href="/artist/{{ c.artist_id.slug }}/">{{ c.artist_id }} </a>
+			{% endfor %}
+			</li>
+		{% endif %}
+    	<li>Birthday: {{ member.birthday }}</li>
+		{% if member.address_line1 %}
+			<li>{{ member.address_line1 }}</li>	
+		{% endif %}
+		{% if member.address_line2 %}
+			<li>{{ member.address_line2 }}</li>	
+		{% endif %}
+    	<li>{{ member.county }}</li>
+    	<li>{{ member.city }}</li>
+    	<li>Credits: {{ member.credits }}</li>
+		{% if user_self %}
+    		<a href="/member/{{ member.slug }}/edit/">Edit Information</a><br />
+			{% if can_rd %}
+    			<a href="/member/{{ member.slug }}/recommendation/">Create A Recommendation</a><br />
+			{% endif %}
+			{% if can_p %}
+    			<a href="/member/{{ member.slug }}/missingconcert/">Post a missing concert</a><br />
+			{% endif %}
+    		<a href="/member/{{ member.slug }}/selectstyle/">Select a style</a><br />
+			{% if recommendation %}
+				<h1>Recommendations</h1>
+				{% for rd in recommendation %}
+        			<li class="list-group-item"><a href="/member/{{ member.slug }}/{{ rd.pk }}/">{{ rd.name }}</a></li>		
+				{% endfor %}
+			{% endif %}
+			{% if goconcerts %}
+				<br />
+				<h1>Concerts I have bought tickets</h1>
+				{% for g in goconcerts %}
+					<li><a href="/concert/{{g.concert_id.pk}}/">{{ g.concert_id }}</a></li>
+				{% endfor %}
+			{% endif %}
+		{% endif %}
+		{% if missingconcerts %}
+			<br />
+			<h1>Past posting missing concerts</h1>
+			{% for c in missingconcerts %}
+				<li>{{c.concert.name}} by {{ c.concert.artist_id }} --- 
+				{% if c.concert.remark_state == 3 %} confirm by admin{% endif %}
+				{% if c.concert.remark_state == 2 %} unconfirm by admin{% endif %}
+				{% if c.concert.remark_state == 4 %} it`s fake information{% endif %}</li>
+			{% endfor %}
+		{% endif %}
+    {% endif %}
+{% endblock %}

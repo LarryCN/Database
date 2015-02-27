@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Like{% endblock %}
+
+{% block body_block %}
+	{% if not is_like %}
+		<form id="userlikeconcert_form" method="post" action="/concert/{{ concert.pk }}/like/">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+               <p> {{ field.errors }} </p>
+               <p> {{ field.help_text }}
+                {{ field }} </p>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Create UserLikeConcert" />
+		</form>
+	{% else %}
+		<p> You want to go to the concert </p>
+    {% endif %}	
+	{% if likes %}
+		<p></p>
+		<h1>Who wants to go to the concert : </h1>
+		{% for l in likes %}
+			<p>{{ l.user_id }} : {{ l.time }}</p>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

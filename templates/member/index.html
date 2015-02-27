@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Index{% endblock %}
+
+{% block body_block %}
+	<form method="get" action="/member/">
+        {% csrf_token %}
+	  	Key words: <input type="text" name=key><br>
+    <input type="submit" name="submit" value="Search" />
+	</form>
+	{% if results %}
+		<p>Result:</p>
+		{% for r in results %}
+			<li><a href='/concert/{{r.pk}}/'>{{ r.name }} by {{ r.artist }} in {{ r.venue }}, {{ r.begin_date }} </a></li>
+		{% endfor %}
+	{% endif %}
+	{% if newposts %}
+		<p>New post concerts:</p>
+		{% for r in newposts %}
+			<li><a href='/concert/{{r.pk}}/'>{{ r.name }} by {{ r.artist }} in {{ r.venue }}, {{ r.begin_date }} </a></li>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

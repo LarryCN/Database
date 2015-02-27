@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ artist_artname }}{% endblock %}
+
+{% block body_block %}
+    {% if artist %}
+		<h1>{{ artist.artname }} </h1>
+		{% if is_user %}
+			{% if is_fan %}
+				<p>You Like</p>
+			{% else %}
+				<form id="fan_form" method="post" action="/artist/{{ artist.slug }}/">
+            		{% csrf_token %}
+            		{% for hidden in form.hidden_fields %}
+                		{{ hidden }}
+            		{% endfor %}
+
+            		{% for field in form.visible_fields %}
+               		<p> {{ field.errors }} </p>
+               		<p> {{ field.help_text }}
+                		{{ field }} </p>
+            		{% endfor %}
+          	  <input type="submit" name="submit" value="Be a fan" />
+				</form>			
+			{% endif %}
+		{% endif %}
+		<div style="float: right;"><img src="{{ MEDIA_URL }}{{ artist.picture }}" width="50%" height="50%"/></div>
+		<li><a href="/artist/{{ artist.slug }}/follower/">{{ fans }} followers</a></li>
+		{% if styles %}
+			<li>Style : {{ styles }}</li>
+		{% endif %}
+    	<li><a href="{{ artist.websit }}">WebSite</a></li>
+		<li>Bio: </li>
+		<p>{{ artist.bio }}</p>	
+		{% if is_artist %}
+    		<a href="/artist/{{ artist.slug }}/postconcert/">Post a concert</a><br />
+    		<a href="/artist/{{ artist.slug }}/edit/">Edit Information</a><br />
+    		<a href="/artist/{{ artist.slug }}/selectstyle/">Select a style</a><br />
+		{% endif %}
+		{% if concerts %}
+			<h1>Concerts</h1>
+			{% for c in concerts %}
+    			<li><a href="/concert/{{ c.pk }}">{{ c.name }} {{ c.begin_date }}</a></li>
+			{% endfor %}
+		{% endif %}
+    {% endif %}
+{% endblock %}

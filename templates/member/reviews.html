@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Write Reviews{% endblock %}
+
+{% block body_block %}
+    <h1>Write Reviews</h1>
+		<form id="userreviews_form" method="post" action="/member/{{ member.slug }}/{{ recommendation.pk }}/add_review/">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+               <p> {{ field.errors }} </p>
+               <p> {{ field.help_text }} </p>
+               <p> {{ field }} </p>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Create UserReviews" />
+        </form>
+{% endblock %}

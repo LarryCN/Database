@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Index{% endblock %}
+
+{% block body_block %}
+
+    <div class="page-header">
+        <h1>Venue Index</h1>
+	</div>
+    <div class="row placeholders">
+    <div class="col-xs-12 col-sm-6 placeholder">
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+    <h3 class="panel-title">Venue</h3>
+    </div>
+	</div>
+    {% if venue %}
+        <ul class="list-group">
+        {% for v in venue %}
+        <li class="list-group-item"><a href="/venue/{{ v.slug }}/">{{ v.name }}</a></li>
+    	{% endfor %}
+        </ul>
+    {% else %}
+        <strong>There are no venue present.</strong>
+    {% endif %}
+    </div>
+    </div>
+{% endblock %}

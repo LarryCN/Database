@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Rating detail{% endblock %}
+
+{% block body_block %}
+	{% if not have_rating %}
+		<form id="userratingconcert_form" method="post" action="/concert/{{ concert.pk }}/ratingdetail/">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+               <p> {{ field.errors }} </p>
+               <p> {{ field.help_text }}
+                {{ field }} </p>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Create UserRatingConcert" />
+		</form>
+	{% else %}
+		<p> You have rated </p>
+    {% endif %}	
+	{% if ratings %}
+		<p></p>
+		<h1>Rating details</h1>
+		{% for r in ratings %}
+			<p>{{ r.time }} {{ r.user_id }}: {{ r.rating }}</p>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

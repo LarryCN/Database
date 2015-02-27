@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Follower{% endblock %}
+
+{% block body_block %}
+	{% if artist %}
+		<h1>{{ artist.artname }}`s followers</h1>
+		{% if fans %}
+		<p></p>
+		{% for f in fans %}
+			<li>{{ f.time }} <a href="/member/{{ f.user_id.slug }}/">{{ f.user_id }}</a></li>
+		{% endfor %}
+		{% else %}
+			<li>There is no follower</li>
+		{% endif %}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Buy Tickets{% endblock %}
+
+{% block body_block %}
+	<p>You have bought {{ have_buy }} tickets</p>
+	{% if not ten  %}
+		<form id="userbuytickets_form" method="post" action="/concert/{{ concert.pk }}/ticket/" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+               <p> {{ field.errors }} </p>
+               <p> {{ field.help_text }}
+                {{ field }} </p>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Create UserBuyTickets" />
+		</form>
+	{% else %}
+		<p> You could not buy more tickets </p>
+    {% endif %}	
+	{% if errors %}
+		<p>{{ errors }}</p>
+	{% endif %}
+{% endblock %}

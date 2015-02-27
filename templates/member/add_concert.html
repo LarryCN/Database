@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Add concert{% endblock %}
+
+{% block body_block %}
+    <h1>Recommendation {{ recommendation.name }}</h1>
+    <h1>Add a concert</h1>
+		<form id="recommendationconcerts_form" method="post" action="/member/{{ user.slug }}/{{ recommendation.id }}/add_concert/">
+
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+               <p> {{ field.errors }} </p>
+               <p> {{ field.help_text }}
+                {{ field }} </p>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Create RecommendationConcert" />
+        </form>
+{% endblock %}

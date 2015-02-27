@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Index{% endblock %}
+
+{% block body_block %}
+
+    <div class="page-header">
+        <h1>Concert Index</h1>
+	</div>
+    <div class="row placeholders">
+    <div class="col-xs-12 col-sm-6 placeholder">
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+    <h3 class="panel-title">Concert</h3>
+    </div>
+	</div>
+    {% if concerts %}
+        <ul class="list-group">
+        {% for c in concerts %}
+			{% if c.remark_state == 1 or c.remark_state == 3 or c.remark_state == 5 %}
+		        <li class="list-group-item"><a href="/concert/{{c.pk}}/">{{ c.name }}</a></li>
+    		{% endif %}
+		{% endfor %}
+        </ul>
+    {% else %}
+        <strong>There are no concert present.</strong>
+    {% endif %}
+    </div>
+    </div>
+{% endblock %}

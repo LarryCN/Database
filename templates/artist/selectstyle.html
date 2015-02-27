@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Select a style{% endblock %}
+
+{% block body_block %}
+    <h1>Select A Style</h1>
+		{% if is_error%}
+			{{ errors }}
+		{% endif %}
+		<form id="style_form" method="post" action="/artist/{{ artist.slug }}/selectstyle/">
+
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+               <p> {{ field.errors }} </p>
+               <p> {{ field.help_text }} 
+                {{ field }} </p>
+            {% endfor %}
+            <input type="submit" name="submit" value="Create ArtistSytle" />
+        </form>
+{% endblock %}
